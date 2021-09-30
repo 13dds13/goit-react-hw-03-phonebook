@@ -7,7 +7,7 @@ const { listWrap, listItem, name, number, btn } = styles;
 const ContactsList = ({
   contactsDataToRender: { title, contacts },
   deleteContact,
-  dataUI: { deleteBtn, noSearchResult },
+  dataUI: { deleteBtn, noDataToRender },
 }) => {
   return contacts.length ? (
     <>
@@ -23,7 +23,7 @@ const ContactsList = ({
               className={btn}
               name={item.name}
               type="button"
-              onClick={() => deleteContact(item.name)}
+              onClick={deleteContact}
             >
               {deleteBtn}
             </button>
@@ -32,7 +32,7 @@ const ContactsList = ({
       </ul>
     </>
   ) : (
-    <p>{noSearchResult}</p>
+    <p>{noDataToRender}</p>
   );
 };
 
@@ -50,7 +50,7 @@ ContactsList.propTypes = {
   }),
   dataUI: PropTypes.shape({
     deleteBtn: PropTypes.string,
-    noSearchResult: PropTypes.string,
+    noDataToRender: PropTypes.string,
   }),
 };
 

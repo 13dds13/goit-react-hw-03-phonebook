@@ -9,5 +9,5 @@
   "titleMain": "Phonebook",
   "titleSecondary": "Contacts",
   "inputSearch": "Find contact by name:",
-  "noSearchResult": "No matches found :("
+  "noDataToRender": "No contacts :("
 }

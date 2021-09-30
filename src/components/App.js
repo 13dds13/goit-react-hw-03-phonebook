@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { nanoid } from "nanoid";
-import INITIAL_DATA from "../data/initialData.json";
 import ContactForm from "./contactForm/ContactForm";
 import Filter from "./filter/Filter";
 import ContactsList from "./contactsList/ContactsList";
 import styles from "./container/Container.module.css";
+import { stateInitialData, storageKey } from "../data/initialData.json";
 import dataUI from "../data/dataUI.json";
 
 const {
@@ -18,14 +18,30 @@ const {
   submitBtn,
   deleteBtn,
   inputSearch,
-  noSearchResult,
+  noDataToRender,
 } = dataUI;
 
 class App extends Component {
-  state = {
-    contacts: [...INITIAL_DATA],
-    filter: "",
-  };
+  state = { ...stateInitialData };
+
+  componentDidMount() {
+    const dataFromStorage = localStorage.getItem(storageKey);
+    if (!dataFromStorage) {
+      return;
+    }
+    const parsedData = JSON.parse(dataFromStorage);
+    this.setState({ contacts: [...parsedData] });
+  }
+
+  componentDidUpdate(prevState) {
+    const prevContacts = prevState.contacts;
+    const currentContacts = this.state.contacts;
+    const wasChanges = prevContacts !== currentContacts;
+    if (wasChanges) {
+      const dataToStorage = JSON.stringify(currentContacts);
+      localStorage.setItem(storageKey, dataToStorage);
+    }
+  }
 
   handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,9 +70,10 @@ class App extends Component {
     }));
   };
 
-  deleteContact = (nameToDelete) => {
+  deleteContact = (e) => {
+    const contactToDelete = e.target.name;
     const filteredContacts = this.state.contacts.filter(
-      ({ name }) => name !== nameToDelete
+      ({ name }) => name !== contactToDelete
     );
     this.setState({ contacts: [...filteredContacts] });
   };
@@ -94,7 +111,7 @@ class App extends Component {
         <ContactsList
           contactsDataToRender={this.contactsToRender(this.state)}
           deleteContact={this.deleteContact}
-          dataUI={{ deleteBtn, noSearchResult }}
+          dataUI={{ deleteBtn, noDataToRender }}
         />
       </div>
     );
