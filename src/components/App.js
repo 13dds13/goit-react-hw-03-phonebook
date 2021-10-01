@@ -48,13 +48,23 @@ class App extends Component {
     this.setState({ [name]: value });
   };
 
-  addNewContact = (name, number) => {
+  checkForDoublingContacts = (newName) => {
     const isAlreadyInContacts = this.state.contacts.find(
-      (item) => item.name.toLowerCase() === name.toLowerCase()
+      (item) => item.name.toLowerCase() === newName.toLowerCase()
     );
 
     if (isAlreadyInContacts) {
-      alert(`${name} ${alertMsg}`);
+      alert(`${newName} ${alertMsg}`);
+      return;
+    }
+
+    return !isAlreadyInContacts;
+  };
+
+  addNewContact = (name, number) => {
+    const canAddContact = this.checkForDoublingContacts(name);
+
+    if (!canAddContact) {
       return;
     }
 
@@ -68,10 +78,11 @@ class App extends Component {
         },
       ],
     }));
+
+    return true;
   };
 
-  deleteContact = (e) => {
-    const contactToDelete = e.target.name;
+  deleteContact = (contactToDelete) => {
     const filteredContacts = this.state.contacts.filter(
       ({ name }) => name !== contactToDelete
     );

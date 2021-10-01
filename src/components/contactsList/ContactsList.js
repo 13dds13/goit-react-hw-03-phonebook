@@ -21,9 +21,8 @@ const ContactsList = ({
             </p>
             <button
               className={btn}
-              name={item.name}
               type="button"
-              onClick={deleteContact}
+              onClick={() => deleteContact(item.name)}
             >
               {deleteBtn}
             </button>

@@ -27,9 +27,11 @@ class ContactForm extends Component {
     e.preventDefault();
     const { name, number } = this.state;
 
-    this.props.addNewContact(name, number);
+    const wasAddedNewContact = this.props.addNewContact(name, number);
 
-    this.resetStateData();
+    if (wasAddedNewContact) {
+      this.resetStateData();
+    }
   };
 
   render() {

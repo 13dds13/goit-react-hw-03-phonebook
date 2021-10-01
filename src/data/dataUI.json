@@ -1,5 +1,5 @@
 {
-  "alertMsg": "is already in contacts",
+  "alertMsg": "is already in contacts. Please change name.",
   "allContacts": "All contacts:",
   "search": "Search result:",
   "inputName": "Enter name:",
